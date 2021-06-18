@@ -1,11 +1,11 @@
-﻿using eShopSolution.Data.Entities;
+﻿using EShopSolution.Data.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace eShopSolution.Data.Configurations
+namespace EShopSolution.Data.Configurations
 {
     public class CategoryTranslationConfiguration : IEntityTypeConfiguration<CategoryTranslation>
     {
