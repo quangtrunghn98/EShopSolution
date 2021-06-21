@@ -1,7 +1,6 @@
-﻿using EShopSolution.Data.Entities;
+﻿using EShopSolution.ViewModels.Catalog.ProductImages;
 using EShopSolution.ViewModels.Catalog.Products;
 using EShopSolution.ViewModels.Common;
-using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -17,17 +16,22 @@ namespace EShopSolution.Application.Catalog.Products
 
         Task<bool> UpdatePrice(int productId, decimal newPrice);
 
-        Task AddViewCout(int productId);
-
         Task<bool> UpdateStock(int productId, int addedQuantiy);
 
+        Task AddViewCout(int productId);
+
         Task<ProductViewModel> GetById(int productId, string languageId);
+
         Task<PagedResult<ProductViewModel>> GetAllPaging(GetManagetProductPagingRequest request);
 
-        Task<int> AddImages(int productId, List<IFormFile> files);
-        Task<int> UpdateImages(int productId, List<IFormFile> files);
-        Task<int> RemoveImages(int productId, List<IFormFile> files);
-
         Task<List<ProductImageViewModel>> GetListImage(int productId);
+
+        Task<ProductImageViewModel> GetImageById(int imageId);
+
+        Task<int> AddImage(int productId, ProductImageCreateRequest request);
+
+        Task<int> UpdateImage(int imageId, ProductImageUpdateRequest request);
+
+        Task<int> RemoveImage(int productImageId);
     }
 }
