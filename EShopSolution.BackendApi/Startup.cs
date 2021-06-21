@@ -1,4 +1,5 @@
 using EShopSolution.Application.Catalog.Products;
+using EShopSolution.Application.Common;
 using EShopSolution.Data.EF;
 using EShopSolution.Utilities.Constants;
 using Microsoft.AspNetCore.Builder;
@@ -25,15 +26,17 @@ namespace EShopSolution.BackendApi
         {
             services.AddDbContext<EShopDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString(SystemConstants.MainConnectString)));
 
+            // Declare DI
+            services.AddTransient<IStorageService, FileStorageService>();
+            services.AddTransient<IPublicProductService, PublicProductService>();
+            services.AddTransient<IManageProductService, ManageProductService>();
+
             services.AddControllers();
 
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Swagger eshop solution", Version = "v1" });
             });
-
-            // Declare DI
-            services.AddTransient<IPublicProductService, PublicProductService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

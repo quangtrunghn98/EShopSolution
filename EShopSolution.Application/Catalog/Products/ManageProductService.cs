@@ -97,7 +97,8 @@ namespace EShopSolution.Application.Catalog.Products
                 };
             }
             _context.Products.Add(product);
-            return await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
+            return product.Id;
         }
 
         public async Task<int> Delete(int productId)
@@ -158,6 +159,30 @@ namespace EShopSolution.Application.Catalog.Products
                 Items = data
             };
             return pageResult;
+        }
+
+        public async Task<ProductViewModel> GetById(int productId, string languageId)
+        {
+            var product = await _context.Products.FindAsync(productId);
+            var productTrans = await _context.ProductTranslations.FirstOrDefaultAsync(x => x.ProductId == productId && x.LanguageId == languageId);
+            if (product == null) throw new EShopException($"Cannot find a product: {productId}");
+
+            return new ProductViewModel()
+            {
+                Id = product.Id,
+                Name = productTrans.Name,
+                DateCreated = product.DateCreated,
+                OriginalPrice = product.OriginalPrice,
+                Price = product.Price,
+                Stock = product.Stock,
+                ViewCount = product.ViewCount,
+                Description = productTrans.Description != null ? productTrans.Description : null,
+                Details = productTrans.Details != null ? productTrans.Details : null,
+                SeoDescription = productTrans.SeoDescription != null ? productTrans.SeoDescription : null,
+                SeoAlias = productTrans.SeoAlias != null ? productTrans.SeoAlias : null,
+                SeoTitle = productTrans.SeoTitle != null ? productTrans.SeoTitle : null,
+                LanguageId = productTrans.LanguageId != null ? productTrans.LanguageId : null,
+            };
         }
 
         public async Task<List<ProductImageViewModel>> GetListImage(int productId)
@@ -239,6 +264,7 @@ namespace EShopSolution.Application.Catalog.Products
 
             return await _context.SaveChangesAsync() > 0;
         }
+
 
         private async Task<string> SaveFile(IFormFile file)
         {
